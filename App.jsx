@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div>
-      <div className="filter-controls">
+      <div>
         <select onChange={typechange} value={filterType}>
           <option value="">Select Filter Type</option>
           <option value="id">ID</option>
@@ -73,15 +73,54 @@ function App() {
         <button onClick={applyFilter}>Apply Filter</button>
       </div>
 
-      <div id="results">
-        <h2>Results:</h2>
-        <ul>
-          {data.map(item => (
-            <li key={item.id}>{JSON.stringify(item)}</li>
-          ))}
-        </ul>
-      </div>
+
+
+          <div>
+
+            <h1>results</h1>
+            {data.length>0?(
+              <table>
+                <thead>
+                  <tr>
+                    <th>Id    |</th>
+                    <th>Name    |</th>
+                    <th>Age    |</th>
+                    <th>Role    |</th>
+                    <th>Hire date    |</th>
+                    <th>Active    |</th>
+                    <th>Salary    |</th>
+                    <th>Department    |</th>
+                    <th>Projects Completed    |</th>
+                    <th>Last Login    |</th>
+                    <th>Access level    |</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+              {data.map(item => (
+                <tr key={item.id}>
+                  <td>{item.id}   |</td>
+                  <td>{item.name}   |</td>
+                  <td>{item.age}   |</td>
+                  <td>{item.role}   |</td>
+                  <td>{item.hireDate}   |</td>
+                  <td>{item.isActive ? 'Yes' : 'No'}   |</td>
+                  <td>{item.salary}   |</td>
+                  <td>{item.department}   |</td>
+                  <td>{item.projectsCompleted}   |</td>
+                  <td>{item.lastLogin}   |</td>
+                  <td>{item.accessLevel}   |</td>
+                </tr>
+              ))}
+            </tbody>
+              </table>
+            ):(
+              <p>No results found</p>
+            )}
+          </div>
     </div>
+
+    
   );
 }
 export default App;
