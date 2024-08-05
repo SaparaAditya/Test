@@ -6,78 +6,82 @@ const mockData = [ { id: 1, name: "Alice Johnson", age: 28, role: "Engineer", hi
 
 
 function App() {
-    const [data, setData] = useState([]);
-    const [filterType, setFilterType] = useState('');
-    const [filterValue, setFilterValue] = useState('');
+  const [data, setData] = useState([]);
+  const [filterType, setFilterType] = useState('');
+  const [filterValue, setFilterValue] = useState('');
 
-    const filterData = (type, value) => {
-        let result;
-        switch (type) {
-            case 'id':
-                const intValue = parseInt(value, 10);
-                result = mockData.filter(item => {
-                    return Object.values(item).some(val => Number.isInteger(val) && val === intValue);
-                });
-                break;
+  const filterData = (type, value) => {
+    let result;
+    switch (type) {
+      case 'id':
+        result = mockData.filter(item => item.id === parseInt(value, 10));
+        break;
 
-            case 'string':
-                result = mockData.filter(item => {
-                    return item.name.toLowerCase() === value.toLowerCase();
-                });
-                break;
+      case 'name':
+        result = mockData.filter(item => item.name.toLowerCase() === value.toLowerCase());
+        break;
 
-            case 'date':
-                result = mockData.filter(item => {
-                    return [item.hireDate, item.lastLogin].some(dateStr => new Date(dateStr).toISOString().split('T')[0] === value);
-                });
-                break;
+      case 'age':
+        result = mockData.filter(item => item.age === parseInt(value, 10));
+        break;
 
-            default:
-                result = [];
-        }
-        setData(result);
-    };
+      case 'hireDate':
+        result = mockData.filter(item => item.hireDate === value);
+        break;
 
-    const handleFilterChange = (event) => {
-        setFilterValue(event.target.value);
-    };
+      case 'department':
+        result = mockData.filter(item => item.department.toLowerCase() === value.toLowerCase());
+        break;
 
-    const handleFilterTypeChange = (event) => {
-        setFilterType(event.target.value);
-    };
+      default:
+        result = [];
+    }
+    setData(result);
+  };
 
-    const applyFilter = () => {
-        filterData(filterType, filterValue);
-    };
+  const filterchange = (event) => {
+    setFilterValue(event.target.value);
+  };
 
-    return (
-        <div>
-            <div className="filter-controls">
-                <select onChange={handleFilterTypeChange} value={filterType}>
-                    <option value="">Select Filter Type</option>
-                    <option value="id">Id</option>
-                    <option value="string">String</option>
-                    <option value="date">Date</option>
-                </select>
-                <input
-                    type="text"
-                    placeholder={`Enter ${filterType}`}
-                    value={filterValue}
-                    onChange={handleFilterChange}
-                />
-                <button onClick={applyFilter}>Apply Filter</button>
-            </div>
+  const typechange = (event) => {
+    setFilterType(event.target.value);
+    setFilterValue('');
+    setData([]);
+  };
 
-            <div id="results">
-                <h2>Results:</h2>
-                <ul>
-                    {data.map(item => (
-                        <li key={item.id}>{JSON.stringify(item)}</li>
-                    ))}
-                </ul>
-            </div>
-        </div>
-    );
+  const applyFilter = () => {
+    filterData(filterType, filterValue);
+  };
+
+  return (
+    <div>
+      <div className="filter-controls">
+        <select onChange={typechange} value={filterType}>
+          <option value="">Select Filter Type</option>
+          <option value="id">ID</option>
+          <option value="name">Name</option>
+          <option value="age">Age</option>
+          <option value="hireDate">Hire Date</option>
+          <option value="department">Department</option>
+        </select>
+        <input
+          type="text"
+          placeholder={`Enter ${filterType}`}
+          value={filterValue}
+          onChange={filterchange}
+        />
+        <button onClick={applyFilter}>Apply Filter</button>
+      </div>
+
+      <div id="results">
+        <h2>Results:</h2>
+        <ul>
+          {data.map(item => (
+            <li key={item.id}>{JSON.stringify(item)}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 }
-
 export default App;
